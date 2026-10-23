@@ -1,0 +1,15 @@
+body{background-color: rgb(233, 137, 11);
+    font-family: Arial;
+  line-height: 1.6;}
+
+h1{color: #db1b25;}
+
+a:hover{color:red;
+         text-decoration: none;
+    color: aquamarine;}
+
+h2{text-transform: uppercase;
+    color: aqua; }
+
+header{background-color: rgb(100, 100, 194);}
+

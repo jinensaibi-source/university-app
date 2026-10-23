@@ -1,0 +1,133 @@
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f5f4fb;
+  color: #30304b;
+}
+
+.container {
+  width: 90%;
+  max-width: 1100px;
+  margin: 30px auto;
+}
+
+.header {
+  text-align: center;
+  padding: 25px;
+  color: white;
+  background-color: #6256a8;
+  border-radius: 12px;
+}
+
+.header h1 {
+  margin: 0 0 8px;
+}
+
+.header p {
+  margin: 0;
+  color: #eeecff;
+}
+
+.navbar {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 20px;
+}
+
+.navbar a {
+  color: #6256a8;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.navbar a:hover {
+  color: #a18bd5;
+}
+
+.titre {
+  text-align: center;
+  margin: 20px 0 25px;
+  color: #40386f;
+}
+
+.students {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  flex-wrap: wrap;
+  gap: 22px;
+}
+
+.card {
+  width: 300px;
+  padding: 22px;
+  background-color: white;
+  border: 1px solid #e4e0f2;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px #30205b12;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.student-photo {
+  display: block;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #dcd5f5;
+}
+
+.card h2 {
+  text-align: center;
+  color: #6256a8;
+  font-size: 20px;
+  margin-bottom: 22px;
+}
+
+.card p {
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.card strong {
+  color: #6256a8;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 35px;
+  padding: 18px;
+  background-color: #e9e5f7;
+  color: #51477e;
+  border-radius: 12px;
+  font-size: 13px;
+}
+
+@media (max-width: 600px) {
+  .container {
+    width: 94%;
+    margin: 15px auto;
+  }
+
+  .navbar {
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 330px;
+  }
+}
