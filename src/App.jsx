@@ -3,13 +3,15 @@ import { useState } from "react";
 import Header from "./components/Header";
 import Navbar from "./components/Navbar";
 import StudentCard from "./components/StudentCard";
-import Footer from "./components/Footer"; 
+import Footer from "./components/Footer";
+import StudentForme from "./components/StudentForme";
 
 import jinenImage from "./assets/jinen.png";
 import ranimImage from "./assets/ranim.png";
 import mariemImage from "./assets/mariem.png";
-
 import "./App.css";
+import"./components/StudentForme.css";
+
 
 const etudiantsInitiaux = [
   {
@@ -24,7 +26,7 @@ const etudiantsInitiaux = [
   },
   {
     id: 2,
-    prenom: "ranim",
+    prenom: "Ranim",
     nom: "Magtouf",
     email: "ranim@gmail.com",
     telephone: "22 222 222",
@@ -34,12 +36,12 @@ const etudiantsInitiaux = [
   },
   {
     id: 3,
-    prenom: "Mariem",
-    nom: "Khalfallah",
-    email: "mariem@gmail.com",
+    prenom: "Dalel",
+    nom: "Abbessi",
+    email: "dalel@gmail.com",
     telephone: "27 777 777",
-    filiere: "GLSI",
-    groupe: "GLSI 2",
+    filiere: "IOT",
+    groupe: "IOT2",
     image: mariemImage
   }
 ];
@@ -47,50 +49,26 @@ const etudiantsInitiaux = [
 function App() {
   const [etudiants, setEtudiants] = useState(etudiantsInitiaux);
 
-  const [prenom, setPrenom] = useState("");
-  const [nom, setNom] = useState("");
-  const [email, setEmail] = useState("");
-  const [telephone, setTelephone] = useState("");
-  const [filiere, setFiliere] = useState("GLSI");
-  const [groupe, setGroupe] = useState("GLSI 2");
-
   const [filtre, setFiltre] = useState("Toutes");
 
-  function ajouterEtudiant(e) {
-    e.preventDefault();
-
-    if (prenom.trim() === "" || nom.trim() === "") {
-      alert("Veuillez saisir le prénom et le nom.");
-      return;
-    }
-
-    const nouvelEtudiant = {
-      id: Date.now(),
-      prenom: prenom,
-      nom: nom,
-      email: email,
-      telephone: telephone,
-      filiere: filiere,
-      groupe: groupe,
-      image: ranimImage
+  // Ajouter un étudiant reçu depuis StudentForme
+  function ajouterEtudiant(nouvelEtudiant) {
+    const etudiantAvecId = {
+      ...nouvelEtudiant,
+      id: Date.now()
     };
 
-    setEtudiants([...etudiants, nouvelEtudiant]);
-
-    setPrenom("");
-    setNom("");
-    setEmail("");
-    setTelephone("");
-    setFiliere("GLSI");
-    setGroupe("GLSI 2");
+    setEtudiants([...etudiants, etudiantAvecId]);
   }
 
+  // Supprimer un étudiant
   function supprimerEtudiant(id) {
     setEtudiants(
       etudiants.filter((etudiant) => etudiant.id !== id)
     );
   }
 
+  // Modifier le prénom
   function modifierPrenom(id, nouveauPrenom) {
     if (nouveauPrenom.trim() === "") {
       alert("Le prénom ne peut pas être vide.");
@@ -106,6 +84,7 @@ function App() {
     );
   }
 
+  // Filtrer les étudiants
   const etudiantsFiltres =
     filtre === "Toutes"
       ? etudiants
@@ -119,66 +98,15 @@ function App() {
       <Navbar />
 
       <main id="etudiants">
+
+        {/* Formulaire d'inscription */}
+        <StudentForme onAjouter={ajouterEtudiant} />
+
         <h2 className="titre">Liste des étudiants</h2>
 
-        <section className="formulaire">
-          <h2>Ajouter un étudiant</h2>
-
-          <form onSubmit={ajouterEtudiant}>
-            <input
-              type="text"
-              placeholder="Prénom"
-              value={prenom}
-              onChange={(e) => setPrenom(e.target.value)}
-              required
-            />
-
-            <input
-              type="text"
-              placeholder="Nom"
-              value={nom}
-              onChange={(e) => setNom(e.target.value)}
-              required
-            />
-
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-
-            <input
-              type="text"
-              placeholder="Téléphone"
-              value={telephone}
-              onChange={(e) => setTelephone(e.target.value)}
-            />
-
-            <select
-              value={filiere}
-              onChange={(e) => setFiliere(e.target.value)}
-            >
-              <option value="GLSI">GLSI</option>
-              <option value="Informatique">Informatique</option>
-              <option value="Réseaux">Réseaux</option>
-            </select>
-
-            <input
-              type="text"
-              placeholder="Groupe"
-              value={groupe}
-              onChange={(e) => setGroupe(e.target.value)}
-            />
-
-            <button onClick={ajouterEtudiant} type="submit" className="btn-ajouter">
-              Ajouter l'étudiant
-            </button>
-          </form>
-        </section>
-
+        {/* Filtrage par filière */}
         <section className="filtrage">
-          <label htmlFor="filtre">Filtrer par filière : </label>
+          <label htmlFor="filtre">Filtrer par filière :</label>
 
           <select
             id="filtre"
@@ -192,6 +120,7 @@ function App() {
           </select>
         </section>
 
+        {/* Affichage des étudiants */}
         <div className="students">
           {etudiantsFiltres.map((etudiant) => (
             <StudentCard
@@ -204,8 +133,11 @@ function App() {
         </div>
 
         {etudiantsFiltres.length === 0 && (
-          <p className="aucun">Aucun étudiant dans cette filière.</p>
+          <p className="aucun">
+            Aucun étudiant dans cette filière.
+          </p>
         )}
+
       </main>
 
       <Footer />
