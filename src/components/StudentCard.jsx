@@ -1,7 +1,12 @@
 
 import { useState } from "react";
 
-function StudentCard({ etudiant, onSupprimer, onModifier }) {
+function StudentCard({
+  etudiant,
+  onSupprimer,
+  onModifier,
+  onModifierPrenom
+}) {
   const [coordonneesVisibles, setCoordonneesVisibles] =
     useState(false);
 
@@ -16,12 +21,13 @@ function StudentCard({ etudiant, onSupprimer, onModifier }) {
   }
 
   function enregistrerModification() {
-    onModifier(etudiant.id, nouveauPrenom);
+    onModifierPrenom(etudiant.id, nouveauPrenom);
     setModeModification(false);
   }
 
   return (
     <div className="card">
+
       <img
         src={etudiant.image}
         alt={"Photo de " + etudiant.prenom}
@@ -74,6 +80,8 @@ function StudentCard({ etudiant, onSupprimer, onModifier }) {
       )}
 
       <div className="actions">
+
+        {/* Ancienne modification TP3 */}
         <button
           className="btn-modifier"
           onClick={() => {
@@ -84,12 +92,21 @@ function StudentCard({ etudiant, onSupprimer, onModifier }) {
           Modifier le prénom
         </button>
 
+        {/* Nouvelle modification TP4 */}
+        <button
+          className="btn-modifier"
+          onClick={() => onModifier(etudiant)}
+        >
+          Modifier toutes les informations
+        </button>
+
         <button
           className="btn-supprimer"
           onClick={() => onSupprimer(etudiant.id)}
         >
           Supprimer
         </button>
+
       </div>
     </div>
   );

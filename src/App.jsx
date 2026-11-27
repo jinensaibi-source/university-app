@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 
 import Header from "./components/Header";
@@ -9,9 +10,9 @@ import StudentForme from "./components/StudentForme";
 import jinenImage from "./assets/jinen.png";
 import ranimImage from "./assets/ranim.png";
 import mariemImage from "./assets/mariem.png";
-import "./App.css";
-import"./components/StudentForme.css";
 
+import "./App.css";
+import "./components/StudentForme.css";
 
 const etudiantsInitiaux = [
   {
@@ -51,37 +52,66 @@ function App() {
 
   const [filtre, setFiltre] = useState("Toutes");
 
-  // Ajouter un étudiant reçu depuis StudentForme
+  // TP4 : étudiant sélectionné pour la modification
+  const [etudiantAModifier, setEtudiantAModifier] = useState(null);
+
+  // Ajouter un étudiant
   function ajouterEtudiant(nouvelEtudiant) {
     const etudiantAvecId = {
       ...nouvelEtudiant,
       id: Date.now()
     };
 
-    setEtudiants([...etudiants, etudiantAvecId]);
+    setEtudiants((anciensEtudiants) => [
+      ...anciensEtudiants,
+      etudiantAvecId
+    ]);
   }
 
   // Supprimer un étudiant
   function supprimerEtudiant(id) {
-    setEtudiants(
-      etudiants.filter((etudiant) => etudiant.id !== id)
+    setEtudiants((anciensEtudiants) =>
+      anciensEtudiants.filter((etudiant) => etudiant.id !== id)
     );
   }
 
-  // Modifier le prénom
+  // TP3 : modifier seulement le prénom
   function modifierPrenom(id, nouveauPrenom) {
     if (nouveauPrenom.trim() === "") {
       alert("Le prénom ne peut pas être vide.");
       return;
     }
 
-    setEtudiants(
-      etudiants.map((etudiant) =>
+    setEtudiants((anciensEtudiants) =>
+      anciensEtudiants.map((etudiant) =>
         etudiant.id === id
           ? { ...etudiant, prenom: nouveauPrenom }
           : etudiant
       )
     );
+  }
+
+  // TP4 : sélectionner un étudiant
+  function modifierEtudiant(etudiant) {
+    setEtudiantAModifier(etudiant);
+  }
+
+  // TP4 : enregistrer les modifications
+  function enregistrerModification(etudiantModifie) {
+    setEtudiants((anciensEtudiants) =>
+      anciensEtudiants.map((etudiant) =>
+        etudiant.id === etudiantModifie.id
+          ? etudiantModifie
+          : etudiant
+      )
+    );
+
+    setEtudiantAModifier(null);
+  }
+
+  // TP4 : annuler la modification
+  function annulerModification() {
+    setEtudiantAModifier(null);
   }
 
   // Filtrer les étudiants
@@ -94,19 +124,33 @@ function App() {
 
   return (
     <div className="container" id="accueil">
+
       <Header />
       <Navbar />
 
       <main id="etudiants">
 
-        {/* Formulaire d'inscription */}
-        <StudentForme onAjouter={ajouterEtudiant} />
+        {/* Formulaire d'ajout et de modification */}
+        <StudentForme
+          key={
+            etudiantAModifier
+              ? etudiantAModifier.id
+              : "nouveau"
+          }
+          onAjouter={ajouterEtudiant}
+          etudiantAModifier={etudiantAModifier}
+          onModifierEtudiant={enregistrerModification}
+          onAnnuler={annulerModification}
+        />
 
         <h2 className="titre">Liste des étudiants</h2>
 
         {/* Filtrage par filière */}
         <section className="filtrage">
-          <label htmlFor="filtre">Filtrer par filière :</label>
+
+          <label htmlFor="filtre">
+            Filtrer par filière :
+          </label>
 
           <select
             id="filtre"
@@ -117,19 +161,24 @@ function App() {
             <option value="GLSI">GLSI</option>
             <option value="Informatique">Informatique</option>
             <option value="Réseaux">Réseaux</option>
+            <option value="IOT">IOT</option>
           </select>
+
         </section>
 
         {/* Affichage des étudiants */}
         <div className="students">
+
           {etudiantsFiltres.map((etudiant) => (
             <StudentCard
               key={etudiant.id}
               etudiant={etudiant}
               onSupprimer={supprimerEtudiant}
-              onModifier={modifierPrenom}
+              onModifier={modifierEtudiant}
+              onModifierPrenom={modifierPrenom}
             />
           ))}
+
         </div>
 
         {etudiantsFiltres.length === 0 && (
@@ -141,6 +190,7 @@ function App() {
       </main>
 
       <Footer />
+
     </div>
   );
 }
